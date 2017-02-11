@@ -117,6 +117,7 @@ SpriteMorph.uber = PenMorph.prototype;
 SpriteMorph.prototype.categories =
     [
         'motion',
+        'events',
         'control',
         'looks',
         'sensing',
@@ -126,10 +127,12 @@ SpriteMorph.prototype.categories =
         'variables',
         'lists',
         'other'
+        'moreblocks'
     ];
 
 SpriteMorph.prototype.blockColor = {
     motion : new Color(74, 108, 212),
+    events : new Color(199, 131, 48),
     looks : new Color(143, 86, 227),
     sound : new Color(207, 74, 217),
     pen : new Color(0, 161, 120),
@@ -138,7 +141,8 @@ SpriteMorph.prototype.blockColor = {
     operators : new Color(98, 194, 19),
     variables : new Color(243, 118, 29),
     lists : new Color(217, 77, 17),
-    other: new Color(150, 150, 150)
+    other: new Color(150, 150, 150),
+    moreblocks: new Color(33, 15, 51)
 };
 
 SpriteMorph.prototype.paletteColor = new Color(55, 55, 55);
@@ -541,12 +545,12 @@ SpriteMorph.prototype.initBlocks = function () {
         // Control
         receiveGo: {
             type: 'hat',
-            category: 'control',
+            category: 'events',
             spec: 'when %greenflag clicked'
         },
         receiveKey: {
             type: 'hat',
-            category: 'control',
+            category: 'events',
             spec: 'when %keyHat key pressed'
         },
 
@@ -561,33 +565,33 @@ SpriteMorph.prototype.initBlocks = function () {
 
         receiveInteraction: {
             type: 'hat',
-            category: 'control',
-            spec: 'when I am %interaction',
+            category: 'events',
+            spec: 'when this sprite am %interaction',
             defaults: ['clicked']
         },
         receiveMessage: {
             type: 'hat',
-            category: 'control',
+            category: 'events',
             spec: 'when I receive %msgHat'
         },
         receiveCondition: {
             type: 'hat',
-            category: 'control',
-            spec: 'when %b'
+            category: 'events',
+            spec: 'when %b is true'
         },
         doBroadcast: {
             type: 'command',
-            category: 'control',
+            category: 'events',
             spec: 'broadcast %msg'
         },
         doBroadcastAndWait: {
             type: 'command',
-            category: 'control',
+            category: 'events',
             spec: 'broadcast %msg and wait'
         },
         getLastMessage: {
             type: 'reporter',
-            category: 'control',
+            category: 'events',
             spec: 'message'
         },
         doWait: {
@@ -1794,6 +1798,17 @@ SpriteMorph.prototype.blockTemplates = function (category) {
         blocks.push(watcherToggle('direction'));
         blocks.push(block('direction'));
 
+    } else if (cat === 'events') {
+        blocks.push(block('receiveGo'));
+        blocks.push(block('receiveKey'));
+        blocks.push(block('receiveInteraction'));
+        blocks.push(block('receiveCondition'));
+        blocks.push(block('receiveMessage'));
+        blocks.push('-');
+        blocks.push(block('doBroadcast'));
+        blocks.push(block('doBroadcastAndWait'));
+        blocks.push(watcherToggle('getLastMessage'));
+        blocks.push(block('getLastMessage'));
     } else if (cat === 'looks') {
 
         blocks.push(block('doSwitchToCostume'));
@@ -1893,16 +1908,7 @@ SpriteMorph.prototype.blockTemplates = function (category) {
 
     } else if (cat === 'control') {
 
-        blocks.push(block('receiveGo'));
-        blocks.push(block('receiveKey'));
-        blocks.push(block('receiveInteraction'));
-        blocks.push(block('receiveCondition'));
-        blocks.push(block('receiveMessage'));
-        blocks.push('-');
-        blocks.push(block('doBroadcast'));
-        blocks.push(block('doBroadcastAndWait'));
-        blocks.push(watcherToggle('getLastMessage'));
-        blocks.push(block('getLastMessage'));
+        
         blocks.push('-');
         blocks.push(block('doWarp'));
         blocks.push('-');
@@ -6103,7 +6109,12 @@ StageMorph.prototype.blockTemplates = function (category) {
         txt.fontSize = 9;
         txt.setColor(this.paletteTextColor);
         blocks.push(txt);
-
+    } else if (cat == 'events') {
+        blocks.push(block('receiveGo'));
+        blocks.push(block('receiveKey'));
+        blocks.push(block('receiveInteraction'));
+        blocks.push(block('receiveCondition'));
+        blocks.push(block('receiveMessage'));
     } else if (cat === 'looks') {
 
         blocks.push(block('doSwitchToCostume'));
@@ -6174,11 +6185,7 @@ StageMorph.prototype.blockTemplates = function (category) {
 
     } else if (cat === 'control') {
 
-        blocks.push(block('receiveGo'));
-        blocks.push(block('receiveKey'));
-        blocks.push(block('receiveInteraction'));
-        blocks.push(block('receiveCondition'));
-        blocks.push(block('receiveMessage'));
+        
         blocks.push('-');
         blocks.push(block('doBroadcast'));
         blocks.push(block('doBroadcastAndWait'));
